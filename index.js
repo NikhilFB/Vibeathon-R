@@ -10,13 +10,12 @@ const threats = [];
 const circles = [];
 let safeRoute;
 
-// Sidebar toggle
+
 sidebarBtn.addEventListener('click', () => {
   sidebar.style.width = sidebar.style.width === "500px" ? "0" : "500px";
   renderThreats();
 });
 
-// Render sidebar threats
 function renderThreats() {
   threatParent.innerHTML = "";
   threatCount.textContent = threats.length;
@@ -30,9 +29,9 @@ function renderThreats() {
     div.classList.add('threat');
 
     const urgency = threat.urgency.trim().toLowerCase();
-    let color = "#a5cf27"; // Low - Green
-    if (urgency === "medium") color = "#c86d2d"; // Medium - Orange
-    if (urgency === "high") color = "#ff0000"; // High - Red
+    let color = "#a5cf27"; 
+    if (urgency === "medium") color = "#c86d2d"; 
+    if (urgency === "high") color = "#ff0000";
 
     div.style.backgroundColor = color;
     div.style.color = "#fff";
@@ -58,11 +57,11 @@ function renderThreats() {
   });
 }
 
-// Initialize map
+
 const map = L.map('map', { zoomControl: false }).setView([0, 0], 2);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
 
-// Current location marker
+
 navigator.geolocation.getCurrentPosition(pos => {
   const lat = pos.coords.latitude;
   const lng = pos.coords.longitude;
@@ -70,11 +69,11 @@ navigator.geolocation.getCurrentPosition(pos => {
   L.marker([lat, lng]).addTo(map).bindPopup("You are here").openPopup();
 }, err => console.error(err));
 
-// Toast notifications
+
 function showToast(msg, urgency) {
-  let color = "#a5cf27"; // Low - Green
-  if (urgency.toLowerCase() === "medium") color = "#c86d2d"; // Medium - Orange
-  if (urgency.toLowerCase() === "high") color = "#ff0000"; // High - Red
+  let color = "#a5cf27"; 
+  if (urgency.toLowerCase() === "medium") color = "#c86d2d"; 
+  if (urgency.toLowerCase() === "high") color = "#ff0000";
 
   toast.textContent = msg;
   toast.style.background = color;
@@ -82,7 +81,7 @@ function showToast(msg, urgency) {
   setTimeout(() => { toast.style.right = "-300px"; }, 3000);
 }
 
-// Add threat on map
+
 map.on('click', e => {
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
@@ -95,13 +94,11 @@ map.on('click', e => {
   const newThreat = { type, urgency, lat, lng, location };
   threats.push(newThreat);
 
-  // Show toast notification
+
   showToast(`${urgency} Alert: ${type}`, urgency);
 
-  // Find nearby threats (200m)
   const nearby = threats.filter(t => map.distance([lat, lng], [t.lat, t.lng]) <= 200);
 
-  // Remove overlapping circles
   let color = "#a5cf27";
   if (urgency.toLowerCase() === "medium") color = "#c86d2d";
   if (urgency.toLowerCase() === "high") color = "#ff0000";
@@ -127,7 +124,7 @@ map.on('click', e => {
   renderThreats();
 });
 
-// Convert address to coordinates
+
 async function getCoordinates(address) {
   const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
   const res = await fetch(url);
@@ -136,7 +133,7 @@ async function getCoordinates(address) {
   return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
 }
 
-// Safe routing
+
 routeBtn.addEventListener('click', async () => {
   if (!navigator.geolocation) return alert("Geolocation not supported");
   const destination = destinationInput.value;
