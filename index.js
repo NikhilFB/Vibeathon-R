@@ -10,12 +10,13 @@ const threats = [];
 const circles = [];
 let safeRoute;
 
-
+// Toggle sidebar
 sidebarBtn.addEventListener('click', () => {
   sidebar.style.width = sidebar.style.width === "500px" ? "0" : "500px";
   renderThreats();
 });
 
+// Render threats in sidebar
 function renderThreats() {
   threatParent.innerHTML = "";
   threatCount.textContent = threats.length;
@@ -29,9 +30,9 @@ function renderThreats() {
     div.classList.add('threat');
 
     const urgency = threat.urgency.trim().toLowerCase();
-    let color = "#a5cf27"; 
-    if (urgency === "medium") color = "#c86d2d"; 
-    if (urgency === "high") color = "#ff0000";
+    let color = "#a5cf27"; // Low
+    if (urgency === "medium") color = "#c86d2d"; // Medium
+    if (urgency === "high") color = "#ff0000"; // High
 
     div.style.backgroundColor = color;
     div.style.color = "#fff";
@@ -57,11 +58,11 @@ function renderThreats() {
   });
 }
 
-
+// Initialize map
 const map = L.map('map', { zoomControl: false }).setView([0, 0], 2);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors' }).addTo(map);
 
-
+// User location
 navigator.geolocation.getCurrentPosition(pos => {
   const lat = pos.coords.latitude;
   const lng = pos.coords.longitude;
@@ -69,11 +70,11 @@ navigator.geolocation.getCurrentPosition(pos => {
   L.marker([lat, lng]).addTo(map).bindPopup("You are here").openPopup();
 }, err => console.error(err));
 
-
+// Toast notifications
 function showToast(msg, urgency) {
-  let color = "#a5cf27"; 
-  if (urgency.toLowerCase() === "medium") color = "#c86d2d"; 
-  if (urgency.toLowerCase() === "high") color = "#ff0000";
+  let color = "#a5cf27"; // Low
+  if (urgency.toLowerCase() === "medium") color = "#c86d2d"; // Medium
+  if (urgency.toLowerCase() === "high") color = "#ff0000"; // High
 
   toast.textContent = msg;
   toast.style.background = color;
@@ -81,7 +82,7 @@ function showToast(msg, urgency) {
   setTimeout(() => { toast.style.right = "-300px"; }, 3000);
 }
 
-
+// Click on map to add threat
 map.on('click', e => {
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
@@ -89,20 +90,24 @@ map.on('click', e => {
   if (!type) return;
   let urgency = prompt("Enter urgency (High / Medium / Low):");
   if (!urgency) urgency = "Low";
-  const location = `Lat: ${lat.toFixed(3)}, Lng: ${lng.toFixed(3)}`;
 
+  const location = `Lat: ${lat.toFixed(3)}, Lng: ${lng.toFixed(3)}`;
   const newThreat = { type, urgency, lat, lng, location };
+
+  // Add threat FIRST
   threats.push(newThreat);
 
+  // Count ALL threats in this area (including the one just added)
+  const nearby = threats.filter(t => map.distance([lat, lng], [t.lat, t.lng]) <= 200);
+  let radius = nearby.length >= 2 ? 200 : 20; // Bigger circle if 2+ threats in area
 
   showToast(`${urgency} Alert: ${type}`, urgency);
 
-  const nearby = threats.filter(t => map.distance([lat, lng], [t.lat, t.lng]) <= 200);
-
-  let color = "#a5cf27";
+  let color = "#a5cf27"; // Low
   if (urgency.toLowerCase() === "medium") color = "#c86d2d";
   if (urgency.toLowerCase() === "high") color = "#ff0000";
 
+  // Remove overlapping same-color circles
   circles.forEach((c, i) => {
     const dist = map.distance([lat, lng], c.getLatLng());
     if (dist <= 200 && c.options.color === color) {
@@ -110,8 +115,6 @@ map.on('click', e => {
       circles.splice(i, 1);
     }
   });
-
-  let radius = nearby.length >= 3 ? 200 : 20;
 
   const circle = L.circle([lat, lng], {
     color: color,
@@ -124,7 +127,7 @@ map.on('click', e => {
   renderThreats();
 });
 
-
+// Get coordinates for address
 async function getCoordinates(address) {
   const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
   const res = await fetch(url);
@@ -133,7 +136,7 @@ async function getCoordinates(address) {
   return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
 }
 
-
+// Safe routing
 routeBtn.addEventListener('click', async () => {
   if (!navigator.geolocation) return alert("Geolocation not supported");
   const destination = destinationInput.value;
@@ -154,6 +157,7 @@ routeBtn.addEventListener('click', async () => {
     const unsafeZones = circles.map(c =>
       turf.circle([c.getLatLng().lng, c.getLatLng().lat], c.getRadius() / 1000, { steps: 20, units: 'kilometers' })
     );
+
     const steps = 50;
     const route = [start];
     let current = start;
@@ -199,6 +203,6 @@ routeBtn.addEventListener('click', async () => {
     route.push(end);
     safeRoute = L.polyline(route, { color: '#16a34a', weight: 5 }).addTo(map);
     map.fitBounds(L.latLngBounds(route));
-    showToast("Safe route calculated", "low"); // Green toast
+    showToast("Safe route calculated", "low");
   });
 });
