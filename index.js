@@ -82,15 +82,23 @@ function showToast(msg, urgency) {
   setTimeout(() => { toast.style.right = "-300px"; }, 3000);
 }
 
-// Reverse geocode: Lat/Lng to address
+// Improved Reverse Geocoding
 async function getLocationName(lat, lng) {
   try {
-    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=16&addressdetails=1`;
     const res = await fetch(url);
     const data = await res.json();
-    return data.display_name || `Lat: ${lat.toFixed(3)}, Lng: ${lng.toFixed(3)}`;
+
+    if (data) {
+      if (data.display_name) return data.display_name;
+
+      const addr = data.address || {};
+      return addr.city || addr.town || addr.village || addr.hamlet || addr.suburb || addr.road || "Unknown location";
+    }
+    return "Unknown location";
   } catch (err) {
-    return `Lat: ${lat.toFixed(3)}, Lng: ${lng.toFixed(3)}`;
+    console.error(err);
+    return "Unknown location";
   }
 }
 
@@ -103,17 +111,17 @@ map.on('click', async e => {
   let urgency = prompt("Enter urgency (High / Medium / Low):");
   if (!urgency) urgency = "Low";
 
-  const locationName = await getLocationName(lat, lng); // get readable name
+  const locationName = await getLocationName(lat, lng);
   const newThreat = { type, urgency, lat, lng, location: locationName };
 
-  // Add threat FIRST
+  // Add threat first
   threats.push(newThreat);
 
-  // Count nearby threats to determine radius
-  const nearby = threats.filter(t => map.distance([lat, lng], [t.lat, t.lng]) <= 200);
-  let radius = nearby.length >= 2 ? 200 : 20; // Bigger circle if 2+ threats
+  showToast(`${urgency} Alert: ${type} at ${locationName}`, urgency);
 
-  showToast(`${urgency} Alert: ${type}`, urgency);
+  // Count nearby threats
+  const nearby = threats.filter(t => map.distance([lat, lng], [t.lat, t.lng]) <= 200);
+  let radius = nearby.length >= 2 ? 200 : 20; // Bigger circle if 2+ threats nearby
 
   let color = "#a5cf27"; // Low
   if (urgency.toLowerCase() === "medium") color = "#c86d2d";
@@ -148,7 +156,7 @@ async function getCoordinates(address) {
   return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
 }
 
-// Safe routing
+// Safe routing (unchanged)
 routeBtn.addEventListener('click', async () => {
   if (!navigator.geolocation) return alert("Geolocation not supported");
   const destination = destinationInput.value;

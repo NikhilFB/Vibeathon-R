@@ -2,39 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Hyper-Local Emergency Alert Wall</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hyper Alert</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="index.css">
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+  <link rel="stylesheet" href="index.css" />
 </head>
 <body>
 
-  <div class="alert-wall">
-    <p class="alert-title">ALERT WALL</p>
-  </div>
+  <div class="container">
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+      <h2>Hyper Alert</h2>
+      <div class="input-group">
+        <input type="text" id="destinationInput" placeholder="Enter Destination">
+        <button id="routeBtn">Safe Route</button>
+      </div>
+      <button class="threats">Show Threats (<span id="threatCount">0</span>)</button>
+      <div id="threatParent" class="threat-list"></div>
+    </div>
 
-  <div id="map-container">
+    <!-- Right Map -->
     <div id="map"></div>
   </div>
 
-  <div class="destination-container">
-    <input type="text" id="destinationInput" placeholder="Enter destination:" />
-    <button id="routeBtn">Show Safe Route</button>
-  </div>
+  <!-- Toast Notification -->
+  <div id="toast"></div>
 
-  <div class="button-container">
-    <button class="threats">Show live threats</button>
-  </div>
-
-  <div id="sidebar" class="sidebar">
-    <h2>Threats: <span id="threatCount">0</span></h2>
-    <div id="threatParent"></div>
-  </div>
-
-  <div id="toast" class="toast"></div>
-
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@turf/turf/turf.min.js"></script>
   <script src="index.js"></script>
 </body>
 </html>

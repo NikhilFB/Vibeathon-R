@@ -1,113 +1,95 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Arial', sans-serif; }
+body, html { width: 100%; height: 100%; }
+
+.container { display: flex; height: 100vh; }
+
+/* Left Sidebar - reduced width */
+.sidebar {
+  width: 35%;
+  background-color: #1f2937; /* Dark sidebar */
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
 }
 
-.alert-wall {
-  background-color: black;
-  height: 60px;
+.sidebar h2 {
+  font-size: 40px;
+  margin-bottom: 20px;
   text-align: center;
 }
-.alert-title {
-  padding-top: 10px;
-  color: white;
-  font-size: 30px;
-  margin: 0;
-}
 
-#map-container {
-  width: 100%;
-  height: 500px;
-  margin: 0;
-  padding: 0;
-}
-#map {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-}
-
-.destination-container {
-  background-color:#12171f;
-  padding: 20px;
-  width: 100%;
+.input-group {
   display: flex;
-  justify-content: center;
   gap: 10px;
 }
-.destination-container input {
-  font-family:'Poppins',sans-serif;
-  width: 300px;
-  height: 25px;
-  padding: 8px 10px;
-  border-radius: 5px;
-  border: none;
-  font-size: 16px;
-}
-.destination-container button {
-  width: 180px;
-  height: 40px;
-  border-radius: 5px;
-  border: none;
-  background-color: rgb(90, 90, 218);
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 16px;
-}
 
-.button-container {
-  background-color:#12171f;
-  padding: 30px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin: 0;
-}
-.threats {
-  width: 250px;
-  height: 50px;
-  color: white;
-  font-weight: bold;
-  border-radius: 5px;
-  background-color: rgb(90, 90, 218);
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.sidebar {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  top: 0;
-  right: -40px;
-  background-color: #f4f4f4;
-  overflow-x: hidden;
-  transition: 0.5s;
-  padding: 20px;
-  box-shadow: -2px 0 5px rgba(0,0,0,0.3);
-  z-index: 1000;
-}
-.threat {
-  padding: 15px;
-  margin: 10px 0;
+.input-group input {
+  flex: 1;
+  padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border: none;
+  font-size: 16px;
 }
-.toast {
+
+.input-group button {
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: none;
+  background-color: #16a34a;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.input-group button:hover { background-color: #15803d; }
+
+.threats {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background-color: #2563eb;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.threats:hover { background-color: #1d4ed8; }
+
+.threat-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
+.threat-card {
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.threat-card:hover { transform: scale(1.02); }
+
+.threat-card.low { background-color: #73d13d; color: white; }
+.threat-card.medium { background-color: #faad14; color: white; }
+.threat-card.high { background-color: #ff4d4f; color: white; }
+
+/* Map - increased width */
+#map {
+  width: 65%;
+  height: 100%;
+}
+
+#toast {
   position: fixed;
   top: 20px;
   right: -300px;
-  background: #ff4444;
-  color: white;
-  padding: 15px 20px;
+  padding: 12px 20px;
   border-radius: 8px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-  font-size: 16px;
-  font-weight: 500;
-  transition: 0.5s ease;
-  z-index: 2000;
+  color: white;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  transition: 0.5s;
+  z-index: 1000;
 }
