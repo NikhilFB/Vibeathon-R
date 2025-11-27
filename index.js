@@ -82,8 +82,20 @@ function showToast(msg, urgency) {
   setTimeout(() => { toast.style.right = "-300px"; }, 3000);
 }
 
+// Reverse geocode: Lat/Lng to address
+async function getLocationName(lat, lng) {
+  try {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    return data.display_name || `Lat: ${lat.toFixed(3)}, Lng: ${lng.toFixed(3)}`;
+  } catch (err) {
+    return `Lat: ${lat.toFixed(3)}, Lng: ${lng.toFixed(3)}`;
+  }
+}
+
 // Click on map to add threat
-map.on('click', e => {
+map.on('click', async e => {
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
   const type = prompt("Enter type of alert (Fire, Accident, Flood etc.):");
@@ -91,15 +103,15 @@ map.on('click', e => {
   let urgency = prompt("Enter urgency (High / Medium / Low):");
   if (!urgency) urgency = "Low";
 
-  const location = `Lat: ${lat.toFixed(3)}, Lng: ${lng.toFixed(3)}`;
-  const newThreat = { type, urgency, lat, lng, location };
+  const locationName = await getLocationName(lat, lng); // get readable name
+  const newThreat = { type, urgency, lat, lng, location: locationName };
 
   // Add threat FIRST
   threats.push(newThreat);
 
-  // Count ALL threats in this area (including the one just added)
+  // Count nearby threats to determine radius
   const nearby = threats.filter(t => map.distance([lat, lng], [t.lat, t.lng]) <= 200);
-  let radius = nearby.length >= 2 ? 200 : 20; // Bigger circle if 2+ threats in area
+  let radius = nearby.length >= 2 ? 200 : 20; // Bigger circle if 2+ threats
 
   showToast(`${urgency} Alert: ${type}`, urgency);
 
@@ -121,7 +133,7 @@ map.on('click', e => {
     fillColor: color,
     fillOpacity: 0.5,
     radius: radius
-  }).addTo(map).bindPopup(`<b>${type}</b><br>Urgency: ${urgency}<br>${location}`);
+  }).addTo(map).bindPopup(`<b>${type}</b><br>Urgency: ${urgency}<br>${locationName}`);
 
   circles.push(circle);
   renderThreats();
