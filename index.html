@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>Hyper-Local Emergency Alert Wall</title>
-
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="stylesheet" href="index.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="index.css">
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
 </head>
 <body>
 
@@ -16,6 +17,11 @@
 
   <div id="map-container">
     <div id="map"></div>
+  </div>
+
+  <div class="destination-container">
+    <input type="text" id="destinationInput" placeholder="Enter destination:" />
+    <button id="routeBtn">Show Safe Route</button>
   </div>
 
   <div class="button-container">
@@ -29,8 +35,6 @@
 
   <div id="toast" class="toast"></div>
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="index.js"></script>
-
 </body>
 </html>
