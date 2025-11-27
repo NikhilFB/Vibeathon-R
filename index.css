@@ -1,28 +1,29 @@
+
 body, html {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
 }
 
-.alert-wall{
-  background-color:black;
-  height:60px;
-  text-align:center;
+
+.alert-wall {
+  background-color: black;
+  height: 60px;
+  text-align: center;
 }
-.alert-title{
-  padding-top:10px;
-  color:white;
-  font-size:30px;
-  font-family:'Poppins',sans-serif;
-  margin-top:0;
-  
+.alert-title {
+  padding-top: 10px;
+  color: white;
+  font-size: 30px;
+  margin: 0;
 }
 
 
 #map-container {
-  position: relative;
   width: 100%;
   height: 500px;
+  margin-bottom: 0;
+  position: relative;
 }
 
 #map {
@@ -32,10 +33,19 @@ body, html {
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
+
+.button-container {
+  background-color:#12171f;
+  padding:30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
 .threats {
-  top:20px;
-  position: absolute; 
-  left: 20px;
+  width:250px;
+  height:50px;
   color: white;
   font-weight: bold;
   border-radius: 5px;
@@ -44,7 +54,9 @@ body, html {
   padding: 10px 15px;
   font-size: 16px;
   cursor: pointer;
-  z-index: 1001; 
+  z-index: 1001;
+  position: static;
+  transform: translateX(-20px);
 }
 
 
