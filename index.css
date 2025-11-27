@@ -1,16 +1,48 @@
-body{
-  position:relative;
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  padding-bottom:500px;
 }
 
-.threats{
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  right: -500px;
+  background-color: #f4f4f4;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.threat {
+  background-color: #ffcccc;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.threats {
+  position:fixed;
   color:white;
-  font-family:Arial;
-  font-size:10px;
-  width:150px;
-  height:40px;
-  background-color:red;
-  border-radius:10px;
-  border-color:white;
-  
-  border-width:2px;
+  font-family:'Poppins',sans-serif;
+  font-size:15px;
+  font-weight:bold;
+  border-radius:5px;
+  background-color:rgb(90, 90, 218);
+  border-style:solid;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
 }
