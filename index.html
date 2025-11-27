@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <title>Hyper-Local Emergency Alert Wall</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link rel="stylesheet" href="index.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 </head>
-
 <body>
 
-  <button class="threats">
-    Show live threats
-  </button>
+  
 
-  <div id="sidebar" class="sidebar">
-    <h2>Threats: <span id="threatCount">0</span></h2>
-
-    <div id="threatParent">
-    
-    </div>
+  <!-- Map container -->
+  <div id="map-container">
+    <div id="map"></div>
+    <button class="threats">Show live threats</button>
   </div>
 
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <h2>Threats: <span id="threatCount">0</span></h2>
+    <div id="threatParent"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="index.js"></script>
 </body>
-
 </html>

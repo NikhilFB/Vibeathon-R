@@ -11,10 +11,10 @@ const threats = [
 ];
 
 sidebarBtn.addEventListener('click', () => {
-  if(sidebar.style.width === "850px") {
+  if(sidebar.style.width === "500px") {
     sidebar.style.width = "0";
   } else {
-    sidebar.style.width = "850px";
+    sidebar.style.width = "500px";
     renderThreats();
   }
 });
@@ -40,3 +40,25 @@ function renderThreats() {
     threatParent.appendChild(div);
   });
 }
+
+
+const map = L.map('map', { zoomControl: false }).setView([0, 0], 2);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+// Get user location
+navigator.geolocation.getCurrentPosition(position => {
+  const lat = position.coords.latitude;
+  const lng = position.coords.longitude;
+  map.setView([lat,lng],14);
+  L.marker([lat,lng]).addTo(map).bindPopup("You are here").openPopup();
+
+  threats.forEach(threat => {
+    L.marker([threat.lat, threat.lng]).addTo(map)
+      .bindPopup(`<b>${threat.type}</b><br>${threat.location}<br>Urgency: ${threat.urgency}`);
+  });
+}, err => {
+  console.error("Location error:", err);
+});

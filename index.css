@@ -1,21 +1,52 @@
-body {
-  font-family: Arial, sans-serif;
+body, html {
   margin: 0;
   padding: 0;
-  padding-bottom:500px;
+  font-family: 'Poppins', sans-serif;
 }
 
+/* Map container relative so button floats on top */
+#map-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Floating button on map */
+.threats {
+  position: absolute; /* floats over map */
+  top: 20px;
+  left: 20px;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  background-color: rgb(90, 90, 218);
+  border: none;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 1001; /* above map */
+}
+
+/* Sidebar styling */
 .sidebar {
   height: 100%;
   width: 0;
   position: fixed;
   top: 0;
-  right: -500px;
+  right: -40px; /* correct sliding */
   background-color: #f4f4f4;
   overflow-x: hidden;
   transition: 0.5s;
   padding: 20px;
   box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+  z-index: 1000;
 }
 
 .sidebar h2 {
@@ -28,21 +59,4 @@ body {
   margin: 10px 0;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.threats {
-  position:fixed;
-  color:white;
-  font-family:'Poppins',sans-serif;
-  font-size:15px;
-  font-weight:bold;
-  border-radius:5px;
-  background-color:rgb(90, 90, 218);
-  border-style:solid;
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  padding: 10px 15px;
-  font-size: 16px;
-  cursor: pointer;
 }
