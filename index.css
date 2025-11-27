@@ -4,7 +4,21 @@ body, html {
   font-family: 'Poppins', sans-serif;
 }
 
-/* Map container relative so button floats on top */
+.alert-wall{
+  background-color:black;
+  height:60px;
+  text-align:center;
+}
+.alert-title{
+  padding-top:10px;
+  color:white;
+  font-size:30px;
+  font-family:'Poppins',sans-serif;
+  margin-top:0;
+  
+}
+
+
 #map-container {
   position: relative;
   width: 100%;
@@ -18,10 +32,9 @@ body, html {
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-/* Floating button on map */
 .threats {
-  position: absolute; /* floats over map */
-  top: 20px;
+  top:20px;
+  position: absolute; 
   left: 20px;
   color: white;
   font-weight: bold;
@@ -31,16 +44,16 @@ body, html {
   padding: 10px 15px;
   font-size: 16px;
   cursor: pointer;
-  z-index: 1001; /* above map */
+  z-index: 1001; 
 }
 
-/* Sidebar styling */
+
 .sidebar {
   height: 100%;
   width: 0;
   position: fixed;
   top: 0;
-  right: -40px; /* correct sliding */
+  right: -40px; 
   background-color: #f4f4f4;
   overflow-x: hidden;
   transition: 0.5s;
