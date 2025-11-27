@@ -1,0 +1,16 @@
+body{
+  position:relative;
+}
+
+.threats{
+  color:white;
+  font-family:Arial;
+  font-size:10px;
+  width:150px;
+  height:40px;
+  background-color:red;
+  border-radius:10px;
+  border-color:white;
+  
+  border-width:2px;
+}
