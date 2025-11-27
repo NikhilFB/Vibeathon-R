@@ -1,16 +1,15 @@
-
 body, html {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
 }
 
-
 .alert-wall {
   background-color: black;
   height: 60px;
   text-align: center;
 }
+
 .alert-title {
   padding-top: 10px;
   color: white;
@@ -18,12 +17,11 @@ body, html {
   margin: 0;
 }
 
-
 #map-container {
   width: 100%;
   height: 500px;
-  margin-bottom: 0;
-  position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 #map {
@@ -33,39 +31,33 @@ body, html {
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-
 .button-container {
   background-color:#12171f;
-  padding:30px;
+  padding: 30px;
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  margin: 0;
 }
 
 .threats {
-  width:250px;
-  height:50px;
+  width: 250px;
+  height: 50px;
   color: white;
   font-weight: bold;
   border-radius: 5px;
   background-color: rgb(90, 90, 218);
   border: none;
-  padding: 10px 15px;
   font-size: 16px;
   cursor: pointer;
-  z-index: 1001;
-  position: static;
-  transform: translateX(-20px);
 }
-
 
 .sidebar {
   height: 100%;
   width: 0;
   position: fixed;
   top: 0;
-  right: -40px; 
+  right: -40px;
   background-color: #f4f4f4;
   overflow-x: hidden;
   transition: 0.5s;
@@ -74,14 +66,24 @@ body, html {
   z-index: 1000;
 }
 
-.sidebar h2 {
-  margin-top: 0;
-}
-
 .threat {
-  background-color: #ffcccc;
   padding: 15px;
   margin: 10px 0;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.toast {
+  position: fixed;
+  top: 20px;
+  right: -300px;
+  background: #ff4444;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  font-size: 16px;
+  font-weight: 500;
+  transition: 0.5s ease;
+  z-index: 2000;
 }

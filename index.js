@@ -4,12 +4,15 @@ const threatParent = document.getElementById('threatParent');
 const threatCount = document.getElementById('threatCount');
 
 const threats = [];
+const circles = [];
 
+// Sidebar toggle
 sidebarBtn.addEventListener('click', () => {
   sidebar.style.width = sidebar.style.width === "500px" ? "0" : "500px";
   renderThreats();
 });
 
+// Render threat list
 function renderThreats() {
   threatParent.innerHTML = "";
   threatCount.textContent = threats.length;
@@ -36,13 +39,13 @@ function renderThreats() {
   });
 }
 
-
+// Initialize map
 const map = L.map('map', { zoomControl: false }).setView([0, 0], 2);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-
+// Get user location
 navigator.geolocation.getCurrentPosition(position => {
   const lat = position.coords.latitude;
   const lng = position.coords.longitude;
@@ -50,10 +53,18 @@ navigator.geolocation.getCurrentPosition(position => {
   L.marker([lat, lng]).addTo(map).bindPopup("You are here").openPopup();
 }, err => console.error(err));
 
-const circles = [];
+// Toast notification
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.style.right = "20px";
 
+  setTimeout(() => {
+    toast.style.right = "-300px";
+  }, 3000);
+}
 
-
+// Add threat on map click
 map.on('click', e => {
   const lat = e.latlng.lat;
   const lng = e.latlng.lng;
@@ -66,43 +77,39 @@ map.on('click', e => {
 
   const location = `Lat: ${lat.toFixed(3)}, Lng: ${lng.toFixed(3)}`;
 
-
   let color = "#a5cf27"; 
   if(urgency.toLowerCase() === "medium") color = "#c86d2d";
   if(urgency.toLowerCase() === "high") color = "#af000f";
 
-  
   const newThreat = { type, urgency, lat, lng, location };
   threats.push(newThreat);
 
-  
+  // Toast notification
+  showToast(`New Alert: ${type} (${urgency})`);
+
   const nearbyThreats = threats.filter(t => 
-    map.distance([lat, lng], [t.lat, t.lng]) <= 200 && 
-    ((t.urgency.toLowerCase() === urgency.toLowerCase()))
+    map.distance([lat, lng], [t.lat, t.lng]) <= 200 &&
+    (t.urgency.toLowerCase() === urgency.toLowerCase())
   );
 
- 
-  circles.forEach((c, index) => {
+  circles.forEach((c, i) => {
     const dist = map.distance([lat, lng], c.getLatLng());
     if(dist <= 200 && c.options.color === color) {
       map.removeLayer(c);
-      circles.splice(index, 1);
+      circles.splice(i, 1);
     }
   });
 
   let circleRadius = 20;
+  if(nearbyThreats.length >= 3) circleRadius = 200;
 
-  if(nearbyThreats.length >= 3) {
-    circleRadius = 200; 
-  }
-
-  
   const circle = L.circle([lat, lng], {
-    color: color,
+    color,
     fillColor: color,
     fillOpacity: 0.5,
     radius: circleRadius
-  }).addTo(map).bindPopup(`<b>${type}</b><br>Urgency: ${urgency}<br>${location}`);
+  }).addTo(map)
+    .bindPopup(`<b>${type}</b><br>Urgency: ${urgency}<br>${location}`);
 
   circles.push(circle);
   renderThreats();
